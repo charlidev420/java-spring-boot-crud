@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการสมาชิก</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --red-version: linear-gradient(to right, #ff2323, #920a0a);
+        }
+
+        /* Navbar CSS */
+        body {
+            font-family: "IBM Plex Sans", "IBM Plex Sans Thai Looped", system-ui;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 100px;
+            width: 100%;
+            height: 60px;
+            align-items: center;
+            border-bottom: 1px solid rgb(229, 231, 235);
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #menu ul {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu ul li {
+            margin: 0 10px;
+            list-style: none;
+        }
+
+        #menu ul li a {
+            text-decoration: none;
+            color: rgb(156 163 175);
+        }
+
+        #logo h3 {
+            background: var(--red-version);
+            margin: 0;
+            line-height: 60px;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #menu a:hover {
+            cursor: pointer;
+        }
+
+        /* Introduce */
+        #introduce {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #introduce h1 {
+            font-weight: 700;
+            font-size: 60px;
+            text-align: center;
+            margin: 0;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #introduce h2 {
+            color: rgb(156 163 175);
+            text-align: center;
+            font-family: "IBM Plex Sans Thai Looped", sans-serif;
+        }
+
+        /* Organizer */
+        .organizer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 600px;
+            background-color: white;
+            padding: 50px 0;
+        }
+
+        .organizer-title h1 {
+            font-size: 60px;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .organizer-lists {
+            display: grid;
+            padding: 50px 80px;
+            width: 80%;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        #organizer-company {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #organizer-company img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+        }
+
+        #organizer-details ul {
+            padding-left: 20px;
+        }
+
+        #organizer-details ul li {
+            list-style: none;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Info Section */
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: rgb(243, 244, 246);
+            padding: 50px;
+            width: 100%;
+        }
+
+        .info #who {
+            margin-left: 100px;
+        }
+
+        .info #whotext {
+            margin-right: 150px;
+        }
+
+        #who h1 {
+            font-weight: 700;
+            font-size: 60px;
+            text-align: left;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #who h2 {
+            color: rgb(156 163 175);
+        }
+
+        #whotext p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        #whotext strong {
+            font-weight: bold;
+        }
+
+        #whotext i {
+            font-style: italic;
+        }
+
+        /* Learn More Button */
+        #learnmore {
+            display: inline-block;
+            border-radius: 40px;
+            padding: 15px 50px;
+            background-color: #ffeaea;
+            border: solid transparent 2px;
+            transition: border-color 0.3s ease-in-out 0.2s;
+            animation: fadeInUp 4s;
+        }
+
+        #learnmore:hover {
+            border-color: #ff5757;
+        }
+
+        #learnmore p {
+            margin: 0;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive Styles */
+        @media only screen and (max-width: 768px) {
+            .organizer-lists {
+                grid-template-columns: 1fr;
+                padding: 30px;
+            }
+
+            #organizer-company {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            #organizer-company img {
+                margin-bottom: 20px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .info #who,
+            .info #whotext {
+                margin: 0;
+            }
+
+            nav {
+                flex-direction: column;
+                height: fit-content;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div id="logo">
+            <h3>ระบบจัดการสมาชิก </h3>
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a th:href = "@{/}">กลับสู่หน้าหลัก</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Introduce -->
+    <div id="introduce">
+        <h1>
+            รายชื่อสมาชิกทั้งหมด
+        </h1>
+    </div>
+
+    <!-- Panel -->
+    <div class="container">
+        <!-- ปุ่มที่เปิด Modal -->
+        <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+            เพิ่มสมาชิก
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addMemberModalLabel"><i class="fa-solid fa-user">&nbsp;</i>เพิ่มสมาชิกใหม่</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/dashboard/saveEmployee}" method="post">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">ชื่อจริง</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">นามสกุล</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">อีเมล</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">เบอร์โทร</label>
+                                <input type="text" class="form-control" id="phone" name="phone" pattern="\d{10}" maxlength="10" oninput="this.value = this.value.slice(0, 10);" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                <button type="submit" class="btn btn-primary">บันทึก</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+                <tr>
+                    <th>
+                        <a th:href="@{'/dashboard/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}}">ชื่อจริง</a>
+
+                    </th>
+                    <th>
+                        <a th:href="@{'/dashboard/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}}">
+                            นามสกุล</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/dashboard/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">
+                            อีเมล</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/dashboard/page/' + ${currentPage} + '?sortField=phone&sortDir=' + ${reverseSortDir}}">
+                            เบอร์โทร</a>
+                    </th>
+                    <th> จัดการสมาชิก </th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(listEmployees)}">
+                <td colspan="5" class="text-center">ไม่มีข้อมูลสมาชิก</td>
+            </tr>
+            <tr th:each="employee : ${listEmployees}">
+                <td th:text="${employee.firstName}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.phone}"></td>
+                <td>
+                    <a th:href="@{/dashboard/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a th:onclick="'javascript:confirmDelete(' + ${employee.id} + ');'" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${totalPages > 1}">
+            <div class="row col-sm-10">
+                <div class="col-sm-2">
+                    จำนวนข้อมูลทั้งหมด: [[${totalItems}]]
+                </div>
+                <div class="col-sm-1">
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <a th:if="${currentPage != i}"
+                            th:href="@{'/dashboard/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                        <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                    </span>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${currentPage < totalPages}"
+                        th:href="@{'/dashboard/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">หน้าถัดไป</a>
+                    <span th:unless="${currentPage < totalPages}">หน้าถัดไป</span>
+                </div>
+
+                <div class="col-sm-1">
+                    <a th:if="${currentPage < totalPages}"
+                        th:href="@{'/dashboard/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">หน้าสุดท้าย</a>
+                    <span th:unless="${currentPage < totalPages}">หน้าสุดท้าย</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p
+            style="padding: 10px 50px; margin: 0; width: 100%; display: flex; justify-content: center; align-items: center; text-align: center;">
+            Made by&nbsp;<a href="https://www.facebook.com/charlidev.z/">CharliDev</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function scrolltoorganizer() {
+            document.getElementById("organizer").addEventListener("click", function () {
+                document.getElementById("organizer").scrollIntoView();
+            });
+        }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script>
+        function confirmDelete(employeeId) {
+            Swal.fire({
+                title: "คุณแน่ใจแล้วเหรอ?",
+                text: "ข้อมูลของคุณจะถูกลบถาวร",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "ยกเลิก",
+                confirmButtonText: "ยืนยัน"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let timerInterval;
+                    Swal.fire({
+                        title: "ลบข้อมูลสำเร็จ",
+                        text: "ระบบจะพาคุณกลับไปในหน้าจัดการสมาชิก",
+                        icon: "success",
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            // Redirect after the timer completes
+                            window.location.href = 'dashboard/deleteEmployee/' + employeeId;
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

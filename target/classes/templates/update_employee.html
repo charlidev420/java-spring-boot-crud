@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการสมาชิก</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --red-version: linear-gradient(to right, #ff2323, #920a0a);
+        }
+
+        /* Navbar CSS */
+        body {
+            font-family: "IBM Plex Sans", "IBM Plex Sans Thai Looped", system-ui;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 100px;
+            width: 100%;
+            height: 60px;
+            align-items: center;
+            border-bottom: 1px solid rgb(229, 231, 235);
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #menu ul {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu ul li {
+            margin: 0 10px;
+            list-style: none;
+        }
+
+        #menu ul li a {
+            text-decoration: none;
+            color: rgb(156 163 175);
+        }
+
+        #logo h3 {
+            background: var(--red-version);
+            margin: 0;
+            line-height: 60px;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #menu a:hover {
+            cursor: pointer;
+        }
+
+        /* Introduce */
+        #introduce {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #introduce h1 {
+            font-weight: 700;
+            font-size: 60px;
+            text-align: center;
+            margin: 0;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #introduce h2 {
+            color: rgb(156 163 175);
+            text-align: center;
+            font-family: "IBM Plex Sans Thai Looped", sans-serif;
+        }
+
+        /* Organizer */
+        .organizer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 600px;
+            background-color: white;
+            padding: 50px 0;
+        }
+
+        .organizer-title h1 {
+            font-size: 60px;
+            font-weight: 700;
+            margin: 0;
+            text-align: center;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .organizer-lists {
+            display: grid;
+            padding: 50px 80px;
+            width: 80%;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        #organizer-company {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #organizer-company img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+        }
+
+        #organizer-details ul {
+            padding-left: 20px;
+        }
+
+        #organizer-details ul li {
+            list-style: none;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Info Section */
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: rgb(243, 244, 246);
+            padding: 50px;
+            width: 100%;
+        }
+
+        .info #who {
+            margin-left: 100px;
+        }
+
+        .info #whotext {
+            margin-right: 150px;
+        }
+
+        #who h1 {
+            font-weight: 700;
+            font-size: 60px;
+            text-align: left;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #who h2 {
+            color: rgb(156 163 175);
+        }
+
+        #whotext p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        #whotext strong {
+            font-weight: bold;
+        }
+
+        #whotext i {
+            font-style: italic;
+        }
+
+        /* Learn More Button */
+        #learnmore {
+            display: inline-block;
+            border-radius: 40px;
+            padding: 15px 50px;
+            background-color: #ffeaea;
+            border: solid transparent 2px;
+            transition: border-color 0.3s ease-in-out 0.2s;
+            animation: fadeInUp 4s;
+        }
+
+        #learnmore:hover {
+            border-color: #ff5757;
+        }
+
+        #learnmore p {
+            margin: 0;
+            background: var(--red-version);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive Styles */
+        @media only screen and (max-width: 768px) {
+            .organizer-lists {
+                grid-template-columns: 1fr;
+                padding: 30px;
+            }
+
+            #organizer-company {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            #organizer-company img {
+                margin-bottom: 20px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .info #who,
+            .info #whotext {
+                margin: 0;
+            }
+
+            nav {
+                flex-direction: column;
+                height: fit-content;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div id="logo">
+            <h3>ระบบจัดการสมาชิก </h3>
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a th:href="@{/dashboard}">กลับสู่หน้าจัดการสมาชิก</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Introduce -->
+    <div id="introduce">
+        <h1>
+            แก้ไขข้อมูลสมาชิก
+        </h1>
+    </div>
+
+    <div class="container">
+        <form id="employeeForm" th:action="@{/dashboard/saveEmployee}" th:object="${employee}" method="POST">
+            <!-- Add hidden form field to handle update -->
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" th:field="*{firstName}" class="form-control" placeholder="ชื่อจริง" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" th:field="*{lastName}" class="form-control" placeholder="นามสกุล" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="email" th:field="*{email}" class="form-control" placeholder="อีเมล" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="number" th:field="*{phone}" class="form-control" placeholder="เบอร์โทร" pattern="\d{10}" maxlength="10" oninput="this.value = this.value.slice(0, 10);" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-info w-100" onclick="successEdit(event)">บันทึก</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <footer>
+        <p
+            style="padding: 10px 50px; margin: 0; width: 100%; display: flex; justify-content: center; align-items: center; text-align: center;">
+            Made by&nbsp;<a href="https://www.facebook.com/charlidev.z/">CharliDev</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function scrolltoorganizer() {
+            document.getElementById("organizer").addEventListener("click", function () {
+                document.getElementById("organizer").scrollIntoView();
+            });
+        }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <script>
+        function successEdit(event) {
+            // ป้องกันการส่งฟอร์มทันที
+            event.preventDefault();
+
+            let timerInterval;
+            Swal.fire({
+                title: "แก้ไขข้อมูลสำเร็จ",
+                text: "ระบบจะพาคุณกลับไปในหน้าหลัก",
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then(() => {
+                // เมื่อการแจ้งเตือนเสร็จสิ้น ให้ส่งฟอร์ม
+                document.getElementById("employeeForm").submit();
+            });
+        }
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
